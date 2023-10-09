@@ -40,7 +40,7 @@ export class PGMessageDataSource implements MessageDataSource {
 
   async getAll(): Promise<MessageResponseModel[]> {
     const dbResponse = await this.db.query(
-      `select * from ${DB_TABLE} where active = true ORDER BY message_read_date ASC LIMIT 5;`
+      `select * from ${DB_TABLE} where active = true ORDER BY message_read_date DESC LIMIT 5;`
     );
     return this.adaptBatchToDomain(dbResponse.rows);
   }
