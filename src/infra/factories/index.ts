@@ -13,6 +13,7 @@ export async function getPGDS() {
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: 5432,
+    ssl: true,
   });
   return new PGMessageDataSource(db);
 }
