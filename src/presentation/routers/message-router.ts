@@ -27,11 +27,19 @@ export default function MessagesRouter(
       if (Array.isArray(requestData)) {
         const actions: any[] = [];
         requestData.map((element) =>
-          actions.push(publishMessageUseCase.execute(element as any))
+          actions.push(publishMessageUseCase.execute({
+            deviceId: element.localDeviceId,
+            data: element.data,
+            messageReadDate: element.createdAt,
+          }))
         );
         Promise.all(actions);
       } else {
-        await publishMessageUseCase.execute(requestData);
+        await publishMessageUseCase.execute({
+          deviceId: requestData.localDeviceId,
+          data: requestData.data,
+          messageReadDate: requestData.createdAt,
+        });
       }
       res.statusCode = 201;
       res.set(defaultHttpHeaders()).json({ success: true });
