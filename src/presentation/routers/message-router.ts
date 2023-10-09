@@ -1,4 +1,3 @@
-import { isArray } from "chart.js/dist/helpers/helpers.core";
 import express from "express";
 import { Request, Response } from "express";
 import { GetAllMessagesUseCase } from "../../domain/interfaces/use-cases/get-all-messages-use-case";
