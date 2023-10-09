@@ -1,11 +1,13 @@
 {
-  "name": "device-reader-api",
+  "name": "device-reader-core",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll --collectCoverage",
-    "dev:build": "tsc",
+    "start": "node lib/index.js",
+    "postinstall": "npm run build",
+    "build": "tsc",
     "dev:server": "nodemon -e js -w lib lib/main.js"
   },
   "keywords": [],
