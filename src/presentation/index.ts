@@ -4,8 +4,8 @@ type HttpHeaders = {
 
 export const defaultHttpHeaders = () : HttpHeaders => ({
   'Content-Type' : 'application/json',
-  'Access-Controll-Allow-Origin': '*',
-  'Access-Controll-Allow-Credentials': 'true',
-  'Access-Controll-Allow-Methods': 'GET, POST, PUT, OPTIONS',
-  'Access-Controll-Allow-Headers': 'Authorization',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+  'Access-Control-Allow-Headers': 'Authorization',
 });
