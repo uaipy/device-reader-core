@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres:
+    restart: always
+    container_name: device_reader_core_postgres_conteiner
+    image: postgres
+    environment:
+      POSTGRES_DB: device_reader_core
+      POSTGRES_PASSWORD: "TremDoMundo@2023!"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data 
