@@ -10,6 +10,6 @@ export class GetAllMessages implements GetAllMessagesUseCase {
 
   async execute(): Promise<MessageResponseModel[]> {
     const result = await this.messageRepository.getMessages();
-    return result;
+    return result.sort((a, b) => a.id - b.id);
   }
 }
