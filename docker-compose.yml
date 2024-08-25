@@ -12,3 +12,14 @@ services:
       - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data 
+
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0
+    container_name: device_reader_mqtt_broker_conteiner
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    restart: unless-stopped
