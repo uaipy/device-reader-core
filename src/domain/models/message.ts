@@ -2,6 +2,7 @@ export interface MessageRequestModel {
   deviceId: number;
   data: any;
   messageReadDate: Date;
+  isSyncedRemotely: boolean;
 }
 
 export interface MessageResponseModel {
@@ -9,4 +10,5 @@ export interface MessageResponseModel {
   deviceId: number;
   data: any;
   messageReadDate: Date;
+  isSyncedRemotely: boolean;
 }

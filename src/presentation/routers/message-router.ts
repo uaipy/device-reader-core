@@ -31,6 +31,7 @@ export default function MessagesRouter(
             deviceId: element.localDeviceId,
             data: element.data,
             messageReadDate: element.createdAt,
+            isSyncedRemotely: false
           }))
         );
         Promise.all(actions);
@@ -39,6 +40,7 @@ export default function MessagesRouter(
           deviceId: requestData.localDeviceId,
           data: requestData.data,
           messageReadDate: requestData.createdAt,
+          isSyncedRemotely: false
         });
       }
       res.statusCode = 201;

@@ -20,4 +20,22 @@ export class MessageRepositoryImpl implements MessageRepository {
     const result = await this.messageDataSource.getAll();
     return result;
   }
+
+  async getUnsynchronizedMessagesRemotely(): Promise<
+  MessageResponseModel[] | undefined
+> {
+  const result =
+    await this.messageDataSource.getUnsynchronizedMessagesRemotely();
+  return result;
+}
+
+  async updateSyncedRemotely(
+    messageId: number,
+    isSyncedRemotely: boolean
+  ): Promise<void> {
+    await this.messageDataSource.updateSyncedRemotely(
+      messageId,
+      isSyncedRemotely
+    );
+  }
 }

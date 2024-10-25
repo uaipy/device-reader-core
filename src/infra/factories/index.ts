@@ -5,6 +5,7 @@ import { GetAllMessages } from "../../domain/use-cases/message/get-all-messages"
 import { PublishMessage } from "../../domain/use-cases/message/publish-message";
 import MessagesRouter from "../../presentation/routers/message-router";
 import 'dotenv/config'
+import { RemoteClientGateway } from "../../gateways/remote-client-gateway";
 
 export async function getPGDS() {
   const db = new Pool({
@@ -13,9 +14,6 @@ export async function getPGDS() {
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: 5432,
-    ssl: {
-      rejectUnauthorized: false
-    }
   });
   return new PGMessageDataSource(db);
 }
@@ -27,6 +25,7 @@ export async function getMessageMiddleWare() {
     new GetAllMessages(new MessageRepositoryImpl(dataSource)),
     new PublishMessage(
       new MessageRepositoryImpl(dataSource),
+      new RemoteClientGateway()
     )
   );
 }

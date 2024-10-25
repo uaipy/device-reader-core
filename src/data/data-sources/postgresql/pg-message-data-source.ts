@@ -17,6 +17,7 @@ export class PGMessageDataSource implements MessageDataSource {
     id: item.id,
     deviceId: item.device_id,
     data: item.data,
+    isSyncedRemotely: item.is_synced_remotely,
     messageReadDate: item.message_read_date,
   });
 
@@ -25,23 +26,56 @@ export class PGMessageDataSource implements MessageDataSource {
       id: item.id,
       deviceId: item.device_id,
       data: item.data,
+      isSyncedRemotely: item.is_synced_remotely,
       messageReadDate: item.message_read_date,
     }));
 
   async create(message: MessageRequestModel): Promise<MessageResponseModel> {
     const dbResponse = await this.db.query(
-      `INSERT INTO ${DB_TABLE} VALUES (
-        DEFAULT,$1,$2,$3, true,now(),now(),null
+      `INSERT INTO ${DB_TABLE} (
+          device_id, 
+          data, 
+          message_read_date, 
+          active, 
+          created_at, 
+          updated_at, 
+          deleted_at
+        ) VALUES (
+          $1, $2, $3, TRUE, NOW(), NOW(), NULL
         ) RETURNING *;`,
-      [message.deviceId, message.data, message.messageReadDate]
+      [
+        message.deviceId,
+        message.data,
+        message.messageReadDate
+      ]
     );
     return this.adaptToDomain(dbResponse.rows[0]);
   }
 
-  async getAll(): Promise<MessageResponseModel[]> {
-    const dbResponse = await this.db.query(
-      `select * from ${DB_TABLE} where active = true ORDER BY message_read_date DESC LIMIT 10;`
+  async updateSyncedRemotely(
+    messageId: number,
+    isSyncedRemotely: boolean
+  ): Promise<void> {
+    await this.db.query(
+      `UPDATE ${DB_TABLE}
+      SET is_synced_remotely = $1, updated_at = now() WHERE id = $2;`,
+      [isSyncedRemotely, messageId]
     );
+  }
+
+  async getAll(): Promise<MessageResponseModel[]> {
+    const dbResponse = await this.db.query(`select * from ${DB_TABLE};`);
     return this.adaptBatchToDomain(dbResponse.rows);
+  }
+
+  async getUnsynchronizedMessagesRemotely(): Promise<
+    MessageResponseModel[] | undefined
+  > {
+    const dbResponse = await this.db.query(
+      `select * from ${DB_TABLE} where is_synced_remotely = false;`
+    );
+    return dbResponse.rows.length > 0
+      ? this.adaptBatchToDomain(dbResponse.rows)
+      : undefined;
   }
 }

@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "jest --watchAll --collectCoverage",
-    "start": "node lib/main.js",
+    "start": "tsc && node lib/main.js",
     "postinstall": "npm run build",
     "build": "tsc",
     "dev:server": "nodemon -e js -w lib lib/main.js"
