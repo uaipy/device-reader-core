@@ -25,10 +25,9 @@ export class PublishMessage implements PublishMessageUseCase {
     });
     console.log('message created', repositoryResponse);
     const clientResponse = await this.callRemoteClient.execute({
-      localDeviceId: repositoryResponse.deviceId,
-      messageId: repositoryResponse.id,
+      integrationCode: process.env.INTEGRATION_CODE as string || "",
       data: repositoryResponse.data,
-      createdAt: repositoryResponse.messageReadDate,
+      messageReadDate: repositoryResponse.messageReadDate,
     });
     console.log('publish message', clientResponse);
     if (clientResponse.success) {
@@ -47,10 +46,9 @@ export class PublishMessage implements PublishMessageUseCase {
     if (!messagesToBeSynchronized) return;
     const clientResponse = await this.callRemoteClient.executeBatch(
       messagesToBeSynchronized.map((element) => ({
-        localDeviceId: element.deviceId,
-        messageId: element.id,
+        integrationCode: process.env.INTEGRATION_CODE as string || "",
         data: element.data,
-        createdAt: element.messageReadDate,
+        messageReadDate: element.messageReadDate,
       }))
     );
     if (clientResponse.success) {

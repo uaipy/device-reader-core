@@ -9,10 +9,9 @@ export interface CallRemoteClientUseCase {
   
   export namespace CallRemoteClientUseCase {
     export type Input = {
-      localDeviceId: number;
-      messageId: number;
+      integrationCode: string;
       data: string;
-      createdAt: Date;
+      messageReadDate: Date;
     };
   
     export type Output = { success: boolean };

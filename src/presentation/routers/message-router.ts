@@ -17,37 +17,30 @@ export default function MessagesRouter(
       res.set(defaultHttpHeaders()).send(messages);
     } catch (err) {
       console.log(err);
-      res.status(500).set(defaultHttpHeaders()).send({ message: "Error fetching data" });
+      res
+        .status(500)
+        .set(defaultHttpHeaders())
+        .send({ message: "Error fetching data" });
     }
   });
 
   router.post("/publish", async (req: Request, res: Response) => {
     try {
       const requestData = req.body;
-      if (Array.isArray(requestData)) {
-        const actions: any[] = [];
-        requestData.map((element) =>
-          actions.push(publishMessageUseCase.execute({
-            deviceId: element.localDeviceId,
-            data: element.data,
-            messageReadDate: element.createdAt,
-            isSyncedRemotely: false
-          }))
-        );
-        Promise.all(actions);
-      } else {
-        await publishMessageUseCase.execute({
-          deviceId: requestData.localDeviceId,
-          data: requestData.data,
-          messageReadDate: requestData.createdAt,
-          isSyncedRemotely: false
-        });
-      }
+      await publishMessageUseCase.execute({
+        deviceId: requestData.localDeviceId,
+        data: requestData.data,
+        messageReadDate: new Date(),
+        isSyncedRemotely: false,
+      });
       res.statusCode = 201;
       res.set(defaultHttpHeaders()).json({ success: true });
     } catch (err) {
       console.log(err.message);
-      res.status(500).set(defaultHttpHeaders()).send({ message: "Error saving data" });
+      res
+        .status(500)
+        .set(defaultHttpHeaders())
+        .send({ message: "Error saving data" });
     }
   });
 

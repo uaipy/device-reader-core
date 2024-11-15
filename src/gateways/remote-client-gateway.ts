@@ -4,7 +4,7 @@ import "dotenv/config";
 
 export class RemoteClientGateway implements CallRemoteClientUseCase {
   private readonly defaultUrl =
-    "https://device-reader-core-741352d6875c.herokuapp.com/message/publish";
+    "https://9l7xt4eeb8.execute-api.us-east-1.amazonaws.com/dev/message/publish";
 
   constructor() {}
 
@@ -16,6 +16,7 @@ export class RemoteClientGateway implements CallRemoteClientUseCase {
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           Authorization: process.env.AUTH_HEADER,
+          "x-api-key": process.env.AUTH_API_KEY,
         },
       };
       const axiosResponse = await axios.post(
@@ -38,6 +39,8 @@ export class RemoteClientGateway implements CallRemoteClientUseCase {
       await axios.post(this.defaultUrl, data, {
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          Authorization: process.env.AUTH_HEADER,
+          "x-api-key": process.env.AUTH_API_KEY,
         },
       });
       return { success: true };
